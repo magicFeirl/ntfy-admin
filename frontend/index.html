@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ntfy admin</title>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <style>
+      body {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        margin: 0;
+        padding-top: 1rem;
+      }
+
+      #app {
+        width: min(768px, 100vw);
+        position: relative;
+      }
+
+      .add-btn {
+        height: 30px;
+        width: 100%;
+        margin-bottom: 1rem;
+      }
+
+      .group-list {
+        display: flex;
+        flex-flow: column;
+      }
+
+      .group {
+        margin: 0 0 10px 0;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+        border-radius: 10px;
+      }
+
+      .group .title {
+        border-radius: 10px 10px 0 0;
+        padding: 10px;
+        background: linear-gradient(
+          150deg,
+          rgb(51, 133, 116) 0%,
+          rgb(86, 189, 168) 100%
+        );
+        font-size: 1.25rem;
+        color: white;
+      }
+
+      .group-body {
+        padding: 10px;
+      }
+
+      .group-item {
+        display: flex;
+        justify-content: start;
+      }
+
+      .group-item .cover {
+        width: 200px;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-right: 1rem;
+      }
+      .group-item .cover img {
+        height: 100%;
+        width: 100%;
+        object-fit: contain;
+      }
+
+      .group-item .info {
+        display: flex;
+        flex-flow: column;
+        justify-content: space-between;
+        padding: 0.5rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <button class="add-btn" @click="handleAddGroup">Add New Group</button>
+      <div class="group-list">
+        <div class="group" v-for="group in groups" :key="group.id">
+          <div class="title">{{ group.title }}</div>
+          <div class="group-body">
+            <button class="add-btn" @click="handleAddGroupItem(group.id)">Add New Streamer</button>
+            <div class="group-item" v-for="item in group.items" :key="item.id">
+              <div class="cover">
+                <img
+                  src="https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE4wEb0?ver=4481"
+                  alt=""
+                />
+              </div>
+              <div class="info">
+                <div class="room-title">主播名 - 直播间标题</div>
+                <div class="room-info">上次开播时间 xxxx</div>
+                <div class="operation">
+                  <button>前往直播间</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <script>
+    const { createApp, ref } = Vue;
+    const app = createApp({
+      setup() {
+        const groups = ref([
+          { title: "Test1", items: [], id: 1 },
+          { title: "Test2", items: [], id: 2 },
+        ]);
+
+        const handleAddGroup = () => {
+          const title = prompt('Group name:')
+          if(!title) {
+            return 
+          }
+
+          groups.value.push({
+            title,
+            items: []
+          })
+        };
+
+        const handleAddGroupItem = (groupId) => {
+          const roomId = prompt('Streamer room id:')
+          if(!roomId) {
+            return 
+          }
+
+          const group = groups.value.find(group => group.id === groupId)
+          if(!group) {
+            return 
+          }
+
+          group.items.push({
+            
+          })
+        };
+
+        return {
+          groups,
+          handleAddGroup,
+          handleAddGroupItem,
+        };
+      },
+    });
+    app.mount("#app");
+  </script>
+</html>
